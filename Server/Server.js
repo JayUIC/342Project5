@@ -14,19 +14,21 @@ app.listen(8081, '0.0.0.0');
 
 let numPlayers = 0;
 let playersReadyForGame = 0;
+let roundNumber = 0;
+
 let playersMadeSelection = 0;
 let players = [""];
 
-let sockets = [""];
+let socketsArr = [""];
 
 io.on('connection', function(socket){
-  sockets.add(socket);
+  socketsArr.add(socket);
   sockets[++numPlayers] = socket;
   players[numPlayers] = {
     player_id: numPlayers,
     xpos: 0,
     ypos: 0,
-    health: 0,
+    health: 100,
     speed: 0,
     current_state: "",
     character_class: ""
@@ -37,13 +39,13 @@ io.on('connection', function(socket){
 });
 /* Lobby: Client OppCode Handlers */
 
-io.socket.on('Exit_Game', function(playerID){
+io.sockets.on('Exit_Game', function(playerID){
   delete players[playerID];
   io.emit('Player_Left', playerID);
   numPlayers--;
 });
 
-io.socket.on('Class_Selected', function(comm_object){
+io.sockets.on('Class_Selected', function(comm_object){
   playersMadeSelection++;
   players[comm_object.player_id].character_class = comm_object.character_selected;
   let send_object = {
@@ -51,7 +53,7 @@ io.socket.on('Class_Selected', function(comm_object){
     character_selected: comm_object.character_selected
   };
 
-io.socket.broadcast.emit('Player_Selected', send_object);
+  io.socketsArr[comm_object.player_id].broadcast.emit('Player_Selected', send_object);
 
   if (playersMadeSelection == 4){
      playersMadeSelection = 0;
@@ -59,12 +61,20 @@ io.socket.broadcast.emit('Player_Selected', send_object);
   }
  });
 
-io.socket.on('Game_Loaded', playerID){
+io.sockets.on('Game_Loaded', function(playerID){
   playersReadyForGame++;
   if (playersReadyForGame == 4){
     io.emit('Begin_Game');
+    roundNumber++;
+    for (let i = 1; i <= 4; i++){
+      players[i].xpos = 50;
+      players[i].ypos = 50;
+    }
     playersReadyForGame = 0;
   }
-}
+});
 
 /* Main Game: Client OppCode Handlers */
+io.sockets.on('Start_Round', function(){
+
+});
