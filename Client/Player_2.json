@@ -1,9 +1,0 @@
-{
-     "Player_ID" : 1
-     "Character" : "Fighter"
-     "X_Pos" : 0
-     "Y_Pos" : 0
-     "Health" : 100
-     "Speed" : 10
-     "Current_State" : "Idle"
-}
