@@ -11,6 +11,20 @@ app.get('/',function(req,res){
 //server.listen(8081);
 app.listen(8081, '0.0.0.0');
 
+let numEnemies = 6;
+let levels = [""];
+
+for(let i = 1; i <= 10; i++) {
+  levels[i] = {
+    num_enemies : numEnemies,
+    xpos : 0,
+    ypos : 0
+  }
+
+  numEnemies = numEnemies*1.5;
+}
+
+
 
 let numPlayers = 0;
 let playersReadyForGame = 0;
@@ -76,5 +90,5 @@ io.sockets.on('Game_Loaded', function(playerID){
 
 /* Main Game: Client OppCode Handlers */
 io.sockets.on('Start_Round', function(){
-
+  io.emit('Load_Level', levels[roundNumber++]);
 });
