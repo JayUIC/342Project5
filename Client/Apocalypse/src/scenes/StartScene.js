@@ -1,5 +1,6 @@
 import {Keys} from "./../keys.js";
 import {LobbyScene} from "./LobbyScene.js";
+import {LevelOne} from "./LevelOne.js";
 
 export class StartScene extends Phaser.Scene {
     constructor () {
@@ -24,12 +25,15 @@ export class StartScene extends Phaser.Scene {
         let playButton = this.add.image(180, 300, Keys.Images.PlayButton).setOrigin(0).setDepth(1);
         this.scene.add(Keys.Scenes.Lobby, LobbyScene);
         
+        //this.scene.add(Keys.Scenes.LevelOne,LevelOne);
+        
         playButton.setScale(0.5, 0.5)
         bg.setScale(1.25, 2);
         playButton.setInteractive();
         
         playButton.on("pointerdown", () => {
             this.scene.start(Keys.Scenes.Lobby);
+            //this.scene.start(Keys.Scenes.LevelOne);
         });
 
     }
