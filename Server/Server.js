@@ -5,11 +5,13 @@ const io = require('socket.io').listen(server);
 
 
 app.get('/',function(req,res){
-  res.sendFile('/Users/jaynimkar/Desktop/Server/index.html');
+  res.sendFile('/Users/jaynimkar/Desktop/index.html');
 });
 
-//server.listen(8081);
+
 app.listen(8081, '0.0.0.0');
+app.use(express.static('Dependencies'));
+app.use(express.static('Assets'));
 
 
 let numPlayers = 0;
@@ -64,15 +66,19 @@ io.sockets.on('Class_Selected', function(comm_object){
 io.sockets.on('Game_Loaded', function(playerID){
   playersReadyForGame++;
   if (playersReadyForGame == 4){
-    io.emit('Begin_Game');
     roundNumber++;
     for (let i = 1; i <= 4; i++){
       players[i].xpos = 50;
       players[i].ypos = 50;
     }
+
     playersReadyForGame = 0;
+    io.emit('Begin_Game');
   }
 });
+
+
+
 
 /* Main Game: Client OppCode Handlers */
 io.sockets.on('Start_Round', function(){
