@@ -68,9 +68,8 @@ public class Client {
 
 
     public void loadLobby() {
-
+        listener.start();
         Pane lobbyPane = new Pane();
-        ScrollPane lobbyContainer = new ScrollPane();
         Label lobbyTitle = new Label("Lobby");
         Scene lobbyScene = new Scene(lobbyPane, 750, 750);
 
@@ -181,29 +180,23 @@ public class Client {
         gameTable.setAlignment(Pos.CENTER_LEFT);
     }
 
+    public ImageView getCardImage(String name, String color) {
+        Image card = new Image("/sample/assets/"+color+"_"+name+".png");
+        ImageView IVcard = new ImageView(card);
+        return IVcard;
+    }
+
     class Card {
         private String name;
         private String color;
+        private ImageView cardImage;
 
         Card(String name, String color) {
             this.name = name;
             this.color = color;
-        }
-
-        public void setColor(String color) {
-            this.color = color;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getColor() {
-            return color;
+            this.cardImage = getCardImage(name, color);
+            cardImage.setFitWidth(80);
+            cardImage.setFitHeight(120);
         }
     }
 
