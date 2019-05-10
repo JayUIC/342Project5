@@ -148,8 +148,14 @@ public class Client {
                 });
             }
             else if (methodCode.equals("player joined")) {
-                player_joined(pieces[1]);
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        player_joined(pieces[1]);
+                    }
+                });
             }
         }
     }
 }
+
