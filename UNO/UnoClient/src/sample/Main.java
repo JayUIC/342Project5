@@ -23,6 +23,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
         primaryStage.setTitle("Uno");
         primaryStage.setResizable(false);
         primaryStage.show();

@@ -55,8 +55,10 @@ public class Client {
     public void loadLobby() {
         Pane lobbyPane = new Pane();
         ScrollPane lobbyContainer = new ScrollPane();
-
+        Label lobbyTitle = new Label("Lobby");
         Scene lobbyScene = new Scene(lobbyPane, 750, 750);
+
+        lobbyPane.setStyle("-fx-background-color: #532fef;");
 
         mainStage.setTitle("Lobby");
         mainStage.setResizable(false);
@@ -64,20 +66,30 @@ public class Client {
 
         mainStage.setScene(lobbyScene);
 
-        lobbyMessage.setAlignment(Pos.CENTER);
+
+        lobbyTitle.setFont(Font.font("Arial",FontWeight.BOLD,25));
+        lobbyTitle.setTextFill(Color.BLACK);
+        lobbyTitle.relocate(340, 100);
+
+
         lobbyMessage.setFont(Font.font("Arial",FontWeight.BOLD,25));
         lobbyMessage.setTextFill(Color.BLACK);
-        lobbyMessage.relocate(350, 0);
+        lobbyMessage.relocate(175, 300);
 
 
-        lobbyPane.getChildren().addAll(lobbyMessage);
+        lobbyPane.getChildren().addAll(lobbyMessage, lobbyTitle);
 
         lobbyContainer.setContent(lobbyPane);
     }
 
 
     public void player_joined(String playersCon) {
-        lobbyMessage.setText("There are " + playersCon + " connected to the server.");
+        if (playersCon.equals("1")) {
+            lobbyMessage.setText("You're the only one connected to the server.");
+        }
+        else {
+            lobbyMessage.setText("There are " + playersCon + " players connected to the server.");
+        }
     }
 
 
