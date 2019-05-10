@@ -19,14 +19,13 @@ import java.net.Socket;
 
 public class Main extends Application {
     private Client client;
-    Label error = new Label("");
+    Label error = new Label(" ");
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         primaryStage.setTitle("Uno");
         primaryStage.setResizable(false);
         primaryStage.show();
-
         Pane background = new Pane();
         background.setStyle("-fx-background-color: #532fef;");
         Scene scene = new Scene(background,750,750);
