@@ -71,6 +71,7 @@ public class Main extends Application {
             error.setText("");
             client = new Client(clientSocket);
             primaryStage.close();
+            client.loadLobby();
         }
         catch (IllegalArgumentException e){
             error.setText("Server not found. Please try again.");
