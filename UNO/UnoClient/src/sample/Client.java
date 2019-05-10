@@ -45,12 +45,13 @@ public class Client {
     Label consoleMessage = new Label();
     VBox gameConsole = new VBox();
     HBox cardTable = new HBox();
-    HBox gameTable = new HBox();
 
     Label p1 = new Label("");
     Label p2 = new Label("");
     Label p3 = new Label("");
     Label p4 = new Label("");
+
+    VBox playerCardCount = new VBox(5);
 
 
     Client(Socket s){
@@ -94,7 +95,6 @@ public class Client {
 
         lobbyPane.getChildren().addAll(lobbyMessage, lobbyTitle);
 
-        lobbyContainer.setContent(lobbyPane);
     }
 
     public void all_cards(String[] numberOfCards) {
@@ -109,7 +109,7 @@ public class Client {
     }
 
     public void your_turn() {
-        consoleMessage.setText("It's your turn!");
+
     }
 
     public void player_joined(String playersCon) {
@@ -144,20 +144,22 @@ public class Client {
         p4.setFont(Font.font("Arial",FontWeight.BOLD,14));
         p4.setTextFill(Color.BLACK);
 
-        String[] nums = {"0","0","0","0","0"};//////////////////////////////////////////////////////////////////////////
+        playerCardCount.getChildren().addAll(p1,p2,p3,p4);
+        playerCardCount.relocate(265,85);
+        Background.getChildren().add(playerCardCount);
+
+        String[] nums = {"0","0","0","0","0"};
         all_cards(nums);
-        p1.relocate(20, 20);
-        p2.relocate(20, 40);
-        p3.relocate(20, 60);
-        p4.relocate(20, 80);
+
     }
     public void createGameConsoleGUI(){
         consoleMessage.setFont(Font.font("Arial", FontWeight.BOLD,18));
         consoleMessage.setTextFill(Color.LIGHTGREEN);
+        consoleMessage.setText("Game Console");
 
-        gameConsole.relocate(225,450);
+        gameConsole.relocate(175,0);
         gameConsole.setMinHeight(75);
-        gameConsole.setMinWidth(300);
+        gameConsole.setMinWidth(375);
         gameConsole.setAlignment(Pos.CENTER);
 
         gameConsole.setStyle("-fx-background-color: #000000");
@@ -174,10 +176,16 @@ public class Client {
         createGameConsoleGUI();
         playerCardMessages();
 
-        gameTable.setStyle("-fx-background-color: #3710e8;");
-        gameTable.relocate(50,250);
-        gameTable.setMinSize(100,100);
-        gameTable.setAlignment(Pos.CENTER_LEFT);
+        Button draw = new Button("Draw");
+        draw.setTextFill(Color.WHITE);
+        draw.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
+        draw.setOnAction(event -> {
+
+        });
+        draw.relocate(600, 25);
+
+        Background.getChildren().add(draw);
+
     }
 
     public ImageView getCardImage(String name, String color) {
