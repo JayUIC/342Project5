@@ -36,6 +36,12 @@ public class Client {
 
     Stage mainStage = new Stage();
     Label lobbyMessage = new Label("");
+    Scene mainScene;
+    Pane Background = new Pane();
+    Label consoleMessage = new Label();
+    VBox gameConsole = new VBox();
+    HBox cardTable = new HBox();
+    HBox gameTable = new HBox();
 
     Client(Socket s){
         serverConnection = s;
@@ -91,6 +97,33 @@ public class Client {
             lobbyMessage.setText("There are " + playersCon + " players connected to the server.");
         }
     }
+    public void createGameConsoleGUI(){
+        consoleMessage.setFont(Font.font("Arial", FontWeight.BOLD,18));
+        consoleMessage.setTextFill(Color.LIGHTGREEN);
+
+
+        gameConsole.relocate(225,450);
+        gameConsole.setMinHeight(75);
+        gameConsole.setMinWidth(300);
+        gameConsole.setAlignment(Pos.CENTER);
+
+        gameConsole.setStyle("-fx-background-color: #000000");
+        gameConsole.getChildren().add(consoleMessage);
+
+        Background.getChildren().add(gameConsole);
+    }
+    public void loadGameScreen(){
+        Background.setStyle("-fx-background-color: #532fef;");
+        mainScene = new Scene(Background,750,750);
+        mainStage.setScene(mainScene);
+
+        createGameConsoleGUI();
+
+        gameTable.setStyle("-fx-background-color: #3710e8;");
+        gameTable.relocate(50,250);
+        gameTable.setMinSize(100,100);
+        gameTable.setAlignment(Pos.CENTER_LEFT);
+    }
 
 
     class serverComm extends Thread {
@@ -106,7 +139,13 @@ public class Client {
 
             String methodCode = pieces[0];
             if (methodCode.equals("start game")) {
-
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadGameScreen();
+                        out.println("hand");
+                    }
+                });
             }
             else if (methodCode.equals("player joined")) {
                 player_joined(pieces[1]);
