@@ -44,7 +44,8 @@ public class Client {
     Pane Background = new Pane();
     Label consoleMessage = new Label();
     VBox gameConsole = new VBox();
-    HBox cardTable = new HBox();
+    HBox cardTable = new HBox(10);
+    VBox centerPile = new VBox();
 
     Label p1 = new Label("");
     Label p2 = new Label("");
@@ -52,6 +53,7 @@ public class Client {
     Label p4 = new Label("");
 
     VBox playerCardCount = new VBox(5);
+    ScrollPane gameHand = new ScrollPane();
 
 
     Client(Socket s){
@@ -97,19 +99,45 @@ public class Client {
 
     }
 
-    public void all_cards(String[] numberOfCards) {
-        p1.setText("Number of Cards Player 1 has: " + numberOfCards[1]);
-        p2.setText("Number of Cards Player 2 has: " + numberOfCards[2]);
-        p3.setText("Number of Cards Player 3 has: " + numberOfCards[3]);
-        p4.setText("Number of Cards Player 4 has: " + numberOfCards[4]);
+    public void all_cards(int playerNumber, int numCards) {
+        if (playerNumber == 1){
+            p1.setText("Number of Cards Player 1 has: " + numCards);
+        }
+        else if (playerNumber == 2){
+            p2.setText("Number of Cards Player 2 has: " + numCards);
+        }
+        else if (playerNumber == 3){
+            p3.setText("Number of Cards Player 3 has: " + numCards);
+        }
+        else{
+            p4.setText("Number of Cards Player 4 has: " + numCards);
+        }
     }
 
     public void message(String message) {
         consoleMessage.setText(message);
     }
 
-    public void your_turn() {
+    private void makeHandSelectable(){
+        for(Card c : hand){
+            c.cardImage.setOnMouseClicked(event -> {
+                centerPile.getChildren().add(c.cardImage);
+                cardTable.getChildren().remove(c.cardImage);
+                makeHandUnSelectable();
+                out.println("Turn;play;" + c.color + ";" + c.name);
+            });
+        }
+    }
+    private void makeHandUnSelectable(){
+        for(Card c : hand){
+            c.cardImage.setOnMouseClicked(event -> {
 
+            });
+        }
+    }
+
+    public void your_turn() {
+        makeHandSelectable();
     }
 
     public void player_joined(String playersCon) {
@@ -128,6 +156,7 @@ public class Client {
             String[] cardElements = cards[i].split(delim);
             Card newCard = new Card(cardElements[0], cardElements[1]);
             hand.add(newCard);
+            cardTable.getChildren().add(newCard.cardImage);
         }
     }
 
@@ -148,14 +177,14 @@ public class Client {
         playerCardCount.relocate(265,85);
         Background.getChildren().add(playerCardCount);
 
-        String[] nums = {"0","0","0","0","0"};
-        all_cards(nums);
+        /*String[] nums = {"0","0","0","0","0"};
+        all_cards(nums);*/
 
     }
     public void createGameConsoleGUI(){
         consoleMessage.setFont(Font.font("Arial", FontWeight.BOLD,18));
         consoleMessage.setTextFill(Color.LIGHTGREEN);
-        consoleMessage.setText("Game Console");
+        consoleMessage.setText("Welcome to UNO");
 
         gameConsole.relocate(175,0);
         gameConsole.setMinHeight(75);
@@ -180,11 +209,24 @@ public class Client {
         draw.setTextFill(Color.WHITE);
         draw.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
         draw.setOnAction(event -> {
-
+            out.println("Turn;draw");
         });
         draw.relocate(600, 25);
 
-        Background.getChildren().add(draw);
+        gameHand.setStyle("-fx-background-color: transparent");
+        cardTable.setStyle("-fx-background-color: transparent;");
+        cardTable.setMinHeight(120);
+
+        gameHand.setContent(cardTable);
+        gameHand.setFitToHeight(true);
+        gameHand.setPrefSize(500, 150);
+        gameHand.relocate(100,575);
+        gameHand.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        gameHand.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+
+        centerPile.relocate(300,300);
+
+        Background.getChildren().addAll(draw,gameHand,centerPile);
 
     }
 
@@ -269,7 +311,7 @@ public class Client {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        all_cards(pieces);
+                        all_cards(Integer.parseInt(pieces[1]), Integer.parseInt(pieces[2]));
                     }
                 });
             }
