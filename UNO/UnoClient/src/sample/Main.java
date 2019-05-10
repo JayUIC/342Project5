@@ -23,6 +23,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
+        Socket s = new Socket();
+        Client a = new Client(s);
+        a.loadLobby();
+
         primaryStage.setTitle("Uno");
         primaryStage.setResizable(false);
         primaryStage.show();
