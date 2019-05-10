@@ -31,14 +31,14 @@ public class Client {
     private PrintWriter out;
     private Scanner in;
 
-    private String usrname;
+    private String numPlayersIn;
 
 
     Stage mainStage = new Stage();
+    Label lobbyMessage = new Label("");
 
     Client(Socket s){
         serverConnection = s;
-
 
         try{
             in = new Scanner(serverConnection.getInputStream());
@@ -47,6 +47,7 @@ public class Client {
         catch (IOException e){
 
         }
+
     }
 
 
@@ -54,11 +55,29 @@ public class Client {
     public void loadLobby() {
         Pane lobbyPane = new Pane();
         ScrollPane lobbyContainer = new ScrollPane();
-        VBox lobbyList = new VBox();
+
         Scene lobbyScene = new Scene(lobbyPane, 750, 750);
 
+        mainStage.setTitle("Lobby");
+        mainStage.setResizable(false);
+        mainStage.show();
+
+        mainStage.setScene(lobbyScene);
+
+        lobbyMessage.setAlignment(Pos.CENTER);
+        lobbyMessage.setFont(Font.font("Arial",FontWeight.BOLD,25));
+        lobbyMessage.setTextFill(Color.BLACK);
+        lobbyMessage.relocate(350, 0);
 
 
+        lobbyPane.getChildren().addAll(lobbyMessage);
+
+        lobbyContainer.setContent(lobbyPane);
+    }
+
+
+    public void player_joined(String playersCon) {
+        lobbyMessage.setText("There are " + playersCon + " connected to the server.");
     }
 
 
@@ -73,8 +92,13 @@ public class Client {
             String delim = ";";
             String[] pieces = input.split(delim);
 
-            int methodCode = Integer.parseInt(pieces[0]);
+            String methodCode = pieces[0];
+            if (methodCode.equals("start game")) {
 
+            }
+            else if (methodCode.equals("player joined")) {
+                player_joined(pieces[1]);
+            }
         }
     }
 }
