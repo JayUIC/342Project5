@@ -24,6 +24,10 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
+        Socket s = new Socket();
+        Client a = new Client(s);
+        a.loadGameScreen();
+
         primaryStage.setTitle("Uno");
         primaryStage.setResizable(false);
         primaryStage.show();
@@ -58,7 +62,7 @@ public class Main extends Application {
         error.setFont(Font.font("Arial",FontWeight.BOLD,12));
         error.relocate(250,400);
 
-        HBox finalBox = new HBox(50);
+        HBox finalBox = new HBox(25);
         finalBox.getChildren().addAll(ip,port,go);
         finalBox.relocate(50,350);
 
