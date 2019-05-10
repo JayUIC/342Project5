@@ -57,7 +57,7 @@ public class Main extends Application {
         error.setFont(Font.font("Arial",FontWeight.BOLD,12));
         error.relocate(250,400);
 
-        HBox finalBox = new HBox(50);
+        HBox finalBox = new HBox(25);
         finalBox.getChildren().addAll(ip,port,go);
         finalBox.relocate(50,350);
 
@@ -70,6 +70,7 @@ public class Main extends Application {
             error.setText("");
             client = new Client(clientSocket);
             primaryStage.close();
+            client.loadLobby();
         }
         catch (IllegalArgumentException e){
             error.setText("Server not found. Please try again.");

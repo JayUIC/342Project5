@@ -31,10 +31,16 @@ public class Client {
     private PrintWriter out;
     private Scanner in;
 
-    private String usrname;
+    private int playerNumber;
 
 
     Stage mainStage = new Stage();
+    Scene mainScene;
+    Pane Background = new Pane();
+    Label consoleMessage = new Label();
+    VBox gameConsole = new VBox();
+    HBox cardTable = new HBox();
+    HBox gameTable = new HBox();
 
     Client(Socket s){
         serverConnection = s;
@@ -56,9 +62,33 @@ public class Client {
         ScrollPane lobbyContainer = new ScrollPane();
         VBox lobbyList = new VBox();
         Scene lobbyScene = new Scene(lobbyPane, 750, 750);
+    }
+    public void createGameConsoleGUI(){
+        consoleMessage.setFont(Font.font("Arial", FontWeight.BOLD,18));
+        consoleMessage.setTextFill(Color.LIGHTGREEN);
 
 
+        gameConsole.relocate(225,450);
+        gameConsole.setMinHeight(75);
+        gameConsole.setMinWidth(300);
+        gameConsole.setAlignment(Pos.CENTER);
 
+        gameConsole.setStyle("-fx-background-color: #000000");
+        gameConsole.getChildren().add(consoleMessage);
+
+        Background.getChildren().add(gameConsole);
+    }
+    public void loadGameScreen(){
+        Background.setStyle("-fx-background-color: #532fef;");
+        mainScene = new Scene(Background,750,750);
+        mainStage.setScene(mainScene);
+
+        createGameConsoleGUI();
+
+        gameTable.setStyle("-fx-background-color: #3710e8;");
+        gameTable.relocate(50,250);
+        gameTable.setMinSize(100,100);
+        gameTable.setAlignment(Pos.CENTER_LEFT);
     }
 
 
@@ -73,7 +103,17 @@ public class Client {
             String delim = ";";
             String[] pieces = input.split(delim);
 
-            int methodCode = Integer.parseInt(pieces[0]);
+            String methodCode = pieces[0];
+
+            if (methodCode.equals("start game")){
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadGameScreen();
+                        out.println("hand");
+                    }
+                });
+            }
 
         }
     }
